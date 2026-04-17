@@ -8,8 +8,11 @@
   "license": "MIT",
   "lspServers": {
     "ansible": {
-      "command": "ansible-language-server",
-      "args": ["--stdio"],
+      "command": "node",
+      "args": [
+        "node_modules/@ansible/ansible-language-server/dist/cli.cjs",
+        "--stdio"
+      ],
       "extensionToLanguage": {
         ".yml": "ansible",
         ".yaml": "ansible"

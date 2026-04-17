@@ -1,10 +1,8 @@
 # ansible-lsp
 
-Ansible language server for Claude Code, providing code intelligence features like diagnostics, auto-completion, hover documentation, and go-to-definition for Ansible playbooks and roles.
+Ansible language server plugin for Claude Code, providing code intelligence features like diagnostics, auto-completion, hover documentation, and go-to-definition for Ansible playbooks and roles.
 
-## Supported Extensions
-
-`.yml`, `.yaml`
+Powered by [@ansible/ansible-language-server](https://www.npmjs.com/package/@ansible/ansible-language-server) (>= 26.4.3).
 
 ## Features
 
@@ -12,24 +10,31 @@ Ansible language server for Claude Code, providing code intelligence features li
 - Smart auto-completion for plays, blocks, tasks, and module options
 - Hover documentation for Ansible keywords, modules, and module options
 - Go-to-definition for module source code
-- Semantic highlighting for Ansible keywords, modules, and Jinja expressions
+
+## Supported Extensions
+
+`.yml`, `.yaml`
 
 ## Installation
 
-Install the Ansible Language Server globally via npm:
-
 ```bash
-npm install -g @ansible/ansible-language-server
+claude plugin install ansible-lsp
 ```
 
 ### Requirements
 
+- Node.js >= 18
 - Ansible 2.9+
 - ansible-lint (recommended, for full validation support)
-- yamllint (optional)
+
+## Known Limitations
+
+- Some LSP clients (including Claude Code) do not support `client/registerCapability` requests. ALS >= 26.4.3 handles this gracefully, but as a result:
+  - Changes to `ansible.cfg`, `.ansible-lint`, or role `meta/main.yml` files require a server restart to take effect
+  - Dynamic configuration change notifications are not received
 
 ## More Information
 
 - [@ansible/ansible-language-server on npm](https://www.npmjs.com/package/@ansible/ansible-language-server)
 - [Ansible Language Server documentation](https://github.com/ansible/vscode-ansible/blob/main/docs/als/README.md)
-- [GitHub Repository](https://github.com/ansible/vscode-ansible)
+- [Upstream fix: ansible/vscode-ansible#2753](https://github.com/ansible/vscode-ansible/pull/2753)
