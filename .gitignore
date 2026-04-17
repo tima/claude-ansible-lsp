@@ -1,2 +1,16 @@
+# Claude Code local settings
+.claude/settings.local.json
+
+# Node
 node_modules/
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
