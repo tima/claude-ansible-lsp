@@ -18,8 +18,14 @@ Powered by [@ansible/ansible-language-server](https://www.npmjs.com/package/@ans
 ## Installation
 
 ```bash
+# Install the Ansible language server
 npm install -g @ansible/ansible-language-server
-claude plugin install ansible-lsp
+
+# Add the plugin marketplace to Claude Code
+claude plugin add https://github.com/tappnel/claude-ansible-lsp
+
+# Install the plugin
+claude plugin install ansible-lsp@claude-ansible-lsp
 ```
 
 ### Requirements

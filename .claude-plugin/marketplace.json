@@ -1,0 +1,14 @@
+{
+  "name": "claude-ansible-lsp",
+  "owner": {
+    "name": "Tim Appnel"
+  },
+  "plugins": [
+    {
+      "name": "ansible-lsp",
+      "source": "./plugins/ansible-lsp",
+      "description": "Ansible language server for enhanced playbook and role intelligence",
+      "version": "1.0.0"
+    }
+  ]
+}

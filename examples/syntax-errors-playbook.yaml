@@ -1,0 +1,113 @@
+---
+- name: Playbook with syntax errors
+  hosts: all
+  become: true
+
+  vars:
+    app_name: demo
+    ports: [80, 443, 8080
+    config:
+      db_host: localhost
+      db_port: 5432
+      db_name
+
+  tasks:
+    # Tab character instead of spaces
+    - name: Install nginx
+	    ansible.builtin.package:
+        name: nginx
+        state: present
+
+    # Colon in unquoted string
+    - name: Show message
+      ansible.builtin.debug:
+        msg: Error: something went wrong
+
+    # Missing colon after key
+    - name: Create directory
+      ansible.builtin.file
+        path: /opt/demo
+        state: directory
+
+    # Mixing block and flow styles incorrectly
+    - name: Set variables
+      ansible.builtin.set_fact:
+        my_list: [one, two,
+        three]
+        my_dict: {key1: val1,
+        key2: val2
+
+    # Unquoted value starting with *
+    - name: Anchor problem
+      ansible.builtin.debug:
+        msg: *undefined_anchor
+
+    # Unquoted value starting with %
+    - name: Percent problem
+      ansible.builtin.debug:
+        msg: %this breaks yaml
+
+    # Duplicate play-level key
+    - name: Duplicate hosts key
+      hosts: webservers
+      hosts: dbservers
+      tasks:
+        - name: Do something
+          ansible.builtin.debug:
+            msg: "hello"
+
+    # Incorrect multiline string indicator
+    - name: Bad multiline
+      ansible.builtin.shell: >-
+        echo "line one"
+         echo "line two"
+      echo "line three is not indented"
+
+    # Mixing list and dict at same level
+    - name: Mixed types
+      ansible.builtin.debug:
+        msg: "test"
+      - name: This is wrong
+        ansible.builtin.debug:
+          msg: "mixed"
+
+    # Value with { that looks like incomplete Jinja2
+    - name: Bad braces
+      ansible.builtin.debug:
+        msg: "value is {not closed"
+
+    # Unclosed quote
+    - name: Unclosed string
+      ansible.builtin.copy:
+        content: "this string never ends
+        dest: /tmp/output.txt
+
+    # Wrong type for become (list instead of bool)
+    - name: Bad become value
+      ansible.builtin.command:
+        cmd: ls
+      become:
+        - yes
+        - no
+
+    # Invalid YAML - mapping inside a sequence without proper indicator
+    - name: Bad sequence mapping
+      ansible.builtin.debug:
+        msg: "test"
+      tags:
+        production
+        staging
+
+    # Jinja2 conflict with YAML flow syntax
+    - name: Jinja braces conflict
+      ansible.builtin.debug:
+        msg: {{ app_name }}
+
+    # Using --- mid-document incorrectly
+    - name: Task before bad separator
+      ansible.builtin.debug:
+        msg: "before"
+    ---
+    - name: This breaks the play
+      ansible.builtin.debug:
+        msg: "after"

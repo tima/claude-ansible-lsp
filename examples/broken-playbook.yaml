@@ -1,0 +1,112 @@
+---
+# Ansible LSP test file
+- name: Broken playbook for LSP testing
+  hosts: webservers
+  become: true
+  gather_facts: true
+
+  vars:
+    app_name: myapp
+    packages:
+      - nginx
+      - python3
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+  tasks:
+    # Bad indentation - map key indented wrong
+    - name: Install packages
+      ansible.builtin.package:
+          name: "{{ item }}"
+           state: present
+      loop: "{{ packages }}"
+
+    # Misspelled module name
+    - name: Create user
+      ansible.builtin.usr:
+        name: appuser
+        state: present
+
+    # Missing required parameter 'name' for service module
+    - name: Start nginx
+      ansible.builtin.service:
+        state: started
+        enabled: true
+
+    # Referencing undefined variable
+    - name: Deploy config
+      ansible.builtin.template:
+        src: config.j2
+        dest: "/opt/{{ app_naem }}/config.yml"
+        mode: "0644"
+
+    # Notify handler that doesn't exist
+    - name: Update config file
+      ansible.builtin.copy:
+        src: app.conf
+        dest: /etc/app.conf
+        mode: "0644"
+      notify:
+        - Restart application
+
+    # Invalid YAML - duplicate key
+    - name: Create directory
+      ansible.builtin.file:
+        path: /opt/myapp
+        state: directory
+        mode: "0755"
+        path: /opt/otherapp
+
+    # Wrong parameter type - should be bool not string
+    - name: Gather subset of facts
+      ansible.builtin.setup:
+        gather_subset:
+          - network
+        gather_timeout: "not_a_number"
+
+    # Jinja2 syntax error - missing closing brace
+    - name: Print debug info
+      ansible.builtin.debug:
+        msg: "The app is {{ app_name } running on {{ inventory_hostname }}"
+
+    # Invalid 'when' condition syntax
+    - name: Conditional task
+      ansible.builtin.debug:
+        msg: "This is Debian"
+      when: ansible_os_family = "Debian"
+
+    # Using bare variable in loop (deprecated)
+    - name: Install extra packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      with_items: packages
+
+    # Invalid option for state
+    - name: Manage service
+      ansible.builtin.service:
+        name: nginx
+        state: reloadedd
+
+    # register with invalid variable name
+    - name: Check something
+      ansible.builtin.command:
+        cmd: whoami
+      register: my-result
+
+    # Bad boolean
+    - name: Copy with bad become
+      ansible.builtin.copy:
+        src: foo.txt
+        dest: /tmp/foo.txt
+      become: yeap
+
+    # FQCN wrong namespace
+    - name: Wrong collection namespace
+      ansible.builtins.file:
+        path: /tmp/test
+        state: directory

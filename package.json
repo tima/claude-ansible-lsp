@@ -1,0 +1,14 @@
+{
+  "name": "claude-ansible-lsp",
+  "version": "1.0.0",
+  "description": "Ansible language server plugin for Claude Code",
+  "peerDependencies": {
+    "@ansible/ansible-language-server": ">=26.4.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tappnel/claude-ansible-lsp.git"
+  },
+  "author": "Tim Appnel",
+  "license": "MIT"
+}
