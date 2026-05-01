@@ -11,6 +11,34 @@ Powered by [@ansible/ansible-language-server](https://www.npmjs.com/package/@ans
 - Hover documentation for Ansible keywords, modules, and module options
 - Go-to-definition for module source code
 
+## Usage Examples
+
+Once the plugin is installed, open an Ansible playbook in Claude Code and try these prompts.
+
+### 1. Search & Navigate Ansible Code
+
+Claude can understand the structure of your playbook and locate specific module usage without grepping.
+
+Open [`examples/webapp-deploy.yaml`](examples/webapp-deploy.yaml) and try:
+
+```
+Find all uses of the debug module in this playbook.
+```
+
+Claude will use the LSP to locate each matching task and return the file and line number.
+
+### 2. Detect & Fix Errors
+
+Claude can validate your playbook and propose fixes without running it.
+
+Open [`examples/broken-playbook.yaml`](examples/broken-playbook.yaml) and try:
+
+```
+Check this playbook for errors and fix any issues you find.
+```
+
+Claude will read the LSP diagnostics, explain what's wrong, and edit the file to fix the errors.
+
 ## Supported Extensions
 
 `.yml`, `.yaml`
